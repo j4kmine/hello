@@ -1,20 +1,91 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="secondary">
+        <ion-title>
+            Data Covid
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+    <ion-header collapse="condense">
+        <ion-toolbar color="secondary">
+            <ion-title size="large">Data Covid</ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <ion-row class="ion-text-center align-items-center">
+        <ion-col size="12">
+            <ion-text>
+                <h4>ADD RECORD</h4>
+            </ion-text>
+        </ion-col>
+    </ion-row>
+    <ion-row padding>
+        <ion-col size="12">
+            <ion-item>
+                <ion-input [(ngModel)]="addrecord.name" placeholder="Name"></ion-input>
+            </ion-item>
+        </ion-col>
+        <ion-col size="12">
+            <ion-item>
+                <ion-input [(ngModel)]="addrecord.age" placeholder="Age"></ion-input>
+            </ion-item>
+        </ion-col>
+        <ion-col size="12">
+            <ion-item>
+                <ion-input [(ngModel)]="addrecord.address" placeholder="Address"></ion-input>
+            </ion-item>
+        </ion-col>
+        <ion-col size="12">
+            <ion-select [(ngModel)]="addrecord.gender" placeholder="Select">
+                <ion-select-option value="male">Male</ion-select-option>
+                <ion-select-option value="female">Female</ion-select-option>
+            </ion-select>
+        </ion-col>
+        <ion-col size="12">
+            <ion-select [(ngModel)]="addrecord.location" placeholder="Select">
+                <ion-select-option value="indonesia">Indonesia</ion-select-option>
+                <ion-select-option value="malaysia">Malaysia</ion-select-option>
+            </ion-select>
+        </ion-col>
+        <ion-col size="12">
+            <input id="uploadBtn" type="file" class="upload" (change)="uploadFile($event.target.files)" />
+        </ion-col>
+        <ion-col size="10" offset="1">
+            <ion-button expand="block" color="success" (click)="AddRecord(addrecord.type, addrecord.description, addrecord.amount)">Add</ion-button>
+        </ion-col>
+    </ion-row>
+    <ion-row padding>
+        <ion-col size="12">
+            <h4>
+                Your last records
+            </h4>
+            <ion-row>
+                <ion-col size="3">
+                    Name
+                </ion-col>
+                <ion-col size="5">
+                    Address
+                </ion-col>
+                <ion-col size="4" class="ion-text-center align-items-center">
+                    Action
+                </ion-col>
+            </ion-row>
+            <ion-row class="align-items-center" *ngFor="let record of records; let i = index">
+                <ion-col size="3">
+                    <ion-note>{{record.name}}</ion-note>
+                </ion-col>
+                <ion-col size="5">
+                    <ion-note>{{record.address}}</ion-note>
+                </ion-col>
+                <ion-col size="4">
+                    <ion-button size="small" color="primary" (click)="UpdateRecord(record.id, record.type, record.description, record.amount)">
+                        <ion-icon name="create-outline"></ion-icon>
+                    </ion-button>
+                    <ion-button size="small" color="danger" (click)="DeleteRecord(record.id)">
+                        <ion-icon name="trash-outline"></ion-icon>
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-col>
+    </ion-row>
 </ion-content>

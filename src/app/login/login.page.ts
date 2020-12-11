@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import firebase from 'firebase/app';
-require('firebase/auth')
+import { Router } from "@angular/router";
+import firebase from 'firebase'
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -10,18 +10,22 @@ require('firebase/auth')
 export class LoginPage implements OnInit {
 
   recaptchaVerifier:firebase.auth.RecaptchaVerifier;
-  constructor( private alertCtrl: AlertController) {}
+  constructor( private alertCtrl: AlertController,  public router: Router) {}
 
   ngOnInit() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if(user != null){
+      this.router.navigate(['home']);
+    }
     this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
   }
   signIn(phoneNumber: number){
     const appVerifier = this.recaptchaVerifier;
     const phoneNumberString = "+" + phoneNumber;
+    let self = this;
     firebase.auth().signInWithPhoneNumber(phoneNumberString, appVerifier)
       .then( async (confirmationResult) => {
-        // SMS sent. Prompt user to type the code from the message, then sign the
-        // user in with confirmationResult.confirm(code).
+
         let prompt = await this.alertCtrl.create({
           inputs: [{ name: 'confirmationCode', placeholder: 'Confirmation Code' }],
           buttons: [
@@ -32,11 +36,13 @@ export class LoginPage implements OnInit {
               handler: data => {
                 confirmationResult.confirm(data.confirmationCode)
                 .then(function (result) {
-          
-                  console.log(result.user);
-                  
+                  localStorage.setItem('user', JSON.stringify(result.user))
+                  self.router.navigate(['home'])
+               
                 }).catch(function (error) {
-                  console.log(error);
+                  console.log(error)
+                  localStorage.setItem('user', null);
+                  window.alert('Error');
                 });
               }
             }
@@ -45,8 +51,10 @@ export class LoginPage implements OnInit {
       await prompt.present();
     })
     .catch(function (error) {
-      console.error("SMS not sent", error);
+
+      window.alert('Sms not sent');
+      localStorage.setItem('user', null);
     });
-  
+   
   }
 }

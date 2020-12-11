@@ -1,20 +1,31 @@
-<ion-header>
-    <ion-toolbar>
-        <ion-title>login</ion-title>
+<ion-header [translucent]="true">
+    <ion-toolbar color="secondary">
+        <ion-title>
+            Login
+        </ion-title>
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
-    <ion-content padding>
-        <div id="recaptcha-container"></div>
 
-        <ion-item>
-            <ion-label stacked>Phone Number</ion-label>
-            <ion-input type="number" [(ngModel)]="phoneNumber"></ion-input>
-        </ion-item>
+<ion-content [fullscreen]="true">
+    <ion-row padding>
 
-        <button ion-button id="sign-in-button" (click)="signIn(phoneNumber)">
-      Sign In
-    </button>
-    </ion-content>
+
+        <ion-col size="12">
+            <ion-item>
+                <ion-label stacked>Phone Number</ion-label>
+                <ion-input type="number" [(ngModel)]="phoneNumber" placeholder="+6281818181"></ion-input>
+            </ion-item>
+        </ion-col>
+        <ion-col size="12">
+            <ion-item>
+                <div id="recaptcha-container"></div>
+            </ion-item>
+        </ion-col>
+        <ion-col size="12">
+            <ion-item>
+                <ion-button expand="block" color="success" (click)="signIn(phoneNumber)">Sign in</ion-button>
+            </ion-item>
+        </ion-col>
+    </ion-row>
 </ion-content>
